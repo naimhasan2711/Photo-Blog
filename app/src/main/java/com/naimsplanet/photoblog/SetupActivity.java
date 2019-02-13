@@ -86,6 +86,12 @@ public class SetupActivity extends AppCompatActivity {
                         mMainImageUri = Uri.parse(image);
 
                         mSetupName.setText(name);
+                        mSetupButton.setVisibility(View.GONE);
+                        mSetupName.setCursorVisible(false);
+                        mSetupName.setLongClickable(false);
+                        mSetupName.setClickable(false);
+                        mSetupName.setFocusable(false);
+                        mSetupName.setBackgroundResource(android.R.color.transparent);
                         RequestOptions placeHolderRequest = new RequestOptions();
                         placeHolderRequest.placeholder(R.drawable.profile_image);
                         Glide.with(SetupActivity.this).setDefaultRequestOptions(placeHolderRequest).load(image).into(mCircleImageView);

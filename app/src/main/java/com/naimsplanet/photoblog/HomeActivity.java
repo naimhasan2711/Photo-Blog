@@ -1,8 +1,13 @@
 package com.naimsplanet.photoblog;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.support.annotation.FractionRes;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -18,13 +23,19 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class HomeActivity extends AppCompatActivity {
+
+public class HomeActivity extends AppCompatActivity
+    {
 
     private FirebaseAuth mAuth;
     private Toolbar main_toolbar;
     private FloatingActionButton mAddBlogpostButton;
     private FirebaseFirestore mFirebaseFirestore;
     String current_user_id;
+    private BottomNavigationView mBottomNavigationView;
+    private HomeFragment homeFragment;
+    private AccountFragment accountFragment;
+    private NotificationFragment notificationFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +49,42 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(main_toolbar);
         getSupportActionBar().setTitle("Photo Blog");
 
+
+        if (mAuth.getCurrentUser() != null) {
+
+            mBottomNavigationView = findViewById(R.id.main_bottom_navigation_view);
+            //fragments
+
+            homeFragment = new HomeFragment();
+            accountFragment = new AccountFragment();
+            notificationFragment = new NotificationFragment();
+
+            initializeFragment();
+
+            mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+                    switch (item.getItemId()) {
+                        case R.id.bottom_home:
+                            replaceFragment(homeFragment, currentFragment);
+                            return true;
+                        case R.id.bottom_account:
+                            replaceFragment(accountFragment, currentFragment);
+                            return true;
+                        case R.id.bottom_notification:
+                            replaceFragment(notificationFragment, currentFragment);
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+            });
+        }
+
         mAddBlogpostButton = findViewById(R.id.add_post_button);
-
         addBlogPost();
-
 
     }
 
@@ -97,6 +140,7 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.toolbar_setting:
                 sentToSetting();
                 return true;
+
         }
         return false;
     }
@@ -122,4 +166,56 @@ public class HomeActivity extends AppCompatActivity {
         Intent setupIntent = new Intent(HomeActivity.this, SetupActivity.class);
         startActivity(setupIntent);
     }
-}
+
+
+    private void initializeFragment() {
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        fragmentTransaction.add(R.id.main_container, homeFragment);
+        fragmentTransaction.add(R.id.main_container, notificationFragment);
+        fragmentTransaction.add(R.id.main_container, accountFragment);
+
+        fragmentTransaction.hide(notificationFragment);
+        fragmentTransaction.hide(accountFragment);
+
+        fragmentTransaction.commit();
+
+    }
+
+    private void replaceFragment(Fragment fragment, Fragment currentFragment) {
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if (fragment == homeFragment) {
+
+            fragmentTransaction.hide(accountFragment);
+            fragmentTransaction.hide(notificationFragment);
+
+        }
+
+        if (fragment == accountFragment) {
+
+            fragmentTransaction.hide(homeFragment);
+            fragmentTransaction.hide(notificationFragment);
+
+        }
+
+        if (fragment == notificationFragment) {
+
+            fragmentTransaction.hide(homeFragment);
+            fragmentTransaction.hide(accountFragment);
+
+        }
+        fragmentTransaction.show(fragment);
+
+        //fragmentTransaction.replace(R.id.main_container, fragment);
+        fragmentTransaction.commit();
+
+    }
+    private void sentToCommnet()
+    {
+        startActivity(new Intent(HomeActivity.this,CommentActivity.class));
+    }
+
+
+    }

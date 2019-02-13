@@ -18,4 +18,25 @@
     <string name="add_description">Add Description</string>
     <string name="post_blog">Post Blog</string>
     <string name="todo">TODO</string>
+    <string name="home">Home</string>
+    <string name="account">Account</string>
+    <string name="notification">Notification</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="username_b">Username</string>
+    <string name="blog_post_date_b">Blog Post Date</string>
+
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, mucius explicari ei eam, et choro accusam has, id pro habemus splendide.</string>
+    <string name="username_blog">Username</string>
+    <string name="blog_post_date_blog">Blog Post Date</string>
+    <string name="lorem_ipsum_dolor_sit_amet_soluta_regione_urbanitas_vis_in_qui_elit_populo_ut">Lorem ipsum dolor sit amet, soluta regione urbanitas vis in, qui elit populo ut.</string>
+    <string name="todo_todo">TODO</string>
+    <string name="blog_like_button">blog like button</string>
+    <string name="_0_likes">0 Likes</string>
+    <string name="comments">Comments :</string>
+    <string name="comment_name">Name</string>
+    <string name="dialog_text">No Internet Connection</string>
+    <string name="commnet_text">Commnet</string>
+    <string name="comment_hint">Your comment...</string>
 </resources>
