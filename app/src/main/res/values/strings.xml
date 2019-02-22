@@ -33,10 +33,15 @@
     <string name="lorem_ipsum_dolor_sit_amet_soluta_regione_urbanitas_vis_in_qui_elit_populo_ut">Lorem ipsum dolor sit amet, soluta regione urbanitas vis in, qui elit populo ut.</string>
     <string name="todo_todo">TODO</string>
     <string name="blog_like_button">blog like button</string>
-    <string name="_0_likes">0 Likes</string>
+    <string name="_0_likes">0</string>
     <string name="comments">Comments :</string>
     <string name="comment_name">Name</string>
     <string name="dialog_text">No Internet Connection</string>
     <string name="commnet_text">Commnet</string>
     <string name="comment_hint">Your comment...</string>
+    <string name="display_name_2">Display Name</string>
+    <string name="posts">Posts</string>
+    <string name="dhaka_bangladesh">Dhaka,Bangladesh</string>
+    <string name="example_gmail_com">example@gmail.com</string>
+    <string name="_100">100</string>
 </resources>

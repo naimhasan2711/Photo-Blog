@@ -8,7 +8,4 @@
     <item android:title="@string/account"
         android:id="@+id/bottom_account"
         android:icon="@drawable/baseline_person_pin_black_24dp"/>
-    <item android:title="@string/notification"
-        android:id="@+id/bottom_notification"
-        android:icon="@drawable/baseline_notifications_black_24dp"/>
 </menu>

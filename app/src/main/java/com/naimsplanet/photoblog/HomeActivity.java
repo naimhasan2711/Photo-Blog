@@ -73,9 +73,6 @@ public class HomeActivity extends AppCompatActivity
                         case R.id.bottom_account:
                             replaceFragment(accountFragment, currentFragment);
                             return true;
-                        case R.id.bottom_notification:
-                            replaceFragment(notificationFragment, currentFragment);
-                            return true;
                         default:
                             return false;
                     }
@@ -137,9 +134,6 @@ public class HomeActivity extends AppCompatActivity
                 logout();
                 return true;
 
-            case R.id.toolbar_setting:
-                sentToSetting();
-                return true;
 
         }
         return false;

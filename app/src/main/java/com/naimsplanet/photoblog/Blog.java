@@ -9,27 +9,19 @@ public class Blog extends BlogPostId {
     private String user_id;
     private String thumb_image;
     private Date timestamp;
-
+    private String location;
 
     public Blog() {
 
     }
 
-    public Blog(String image_url, String desc, String user_id, String thumb_image, Date timestamp) {
+    public Blog(String image_url, String desc, String user_id, String thumb_image, Date timestamp, String location) {
         this.image_url = image_url;
         this.desc = desc;
         this.user_id = user_id;
         this.thumb_image = thumb_image;
         this.timestamp = timestamp;
-
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+        this.location = location;
     }
 
     public String getImage_url() {
@@ -64,5 +56,20 @@ public class Blog extends BlogPostId {
         this.thumb_image = thumb_image;
     }
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
 }

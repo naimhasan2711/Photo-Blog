@@ -117,14 +117,17 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
 
-                    if (!documentSnapshots.isEmpty()) {
-                        lastVisible = documentSnapshots.getDocuments().get(documentSnapshots.size() - 1);
-                        for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
-                            if (doc.getType() == DocumentChange.Type.ADDED) {
-                                String blogPostId = doc.getDocument().getId();
-                                Blog blog = doc.getDocument().toObject(Blog.class).withID(blogPostId);
-                                blog_list.add(blog);
-                                blogRecyclerAdapter.notifyDataSetChanged();
+                    if(e==null)
+                    {
+                        if (!documentSnapshots.isEmpty()) {
+                            lastVisible = documentSnapshots.getDocuments().get(documentSnapshots.size() - 1);
+                            for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+                                if (doc.getType() == DocumentChange.Type.ADDED) {
+                                    String blogPostId = doc.getDocument().getId();
+                                    Blog blog = doc.getDocument().toObject(Blog.class).withID(blogPostId);
+                                    blog_list.add(blog);
+                                    blogRecyclerAdapter.notifyDataSetChanged();
+                                }
                             }
                         }
                     }

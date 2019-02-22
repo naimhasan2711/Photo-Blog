@@ -6,15 +6,12 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
-import android.text.style.IconMarginSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,9 +24,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
-
-//import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +65,9 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         String blog_post_image = blog_list.get(position).getImage_url();
         String blog_post_thumb = blog_list.get(position).getImage_url();
         holder.setBlogImage(blog_post_image, blog_post_thumb);
+        String locationText = blog_list.get(position).getLocation();
+        holder.setBlogLocation(locationText);
+
 
         String user_id = blog_list.get(position).getUser_id();
         firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -89,21 +86,19 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
 
         try {
             long millisecond = blog_list.get(position).getTimestamp().getTime();
-            String dateString = DateFormat.format("MM/dd/yyyy", new Date(millisecond)).toString();
+            //String dateString = DateFormat.format("MM/dd/yyyy", new Date(millisecond)).toString();
+            String dateString = DateFormat.format("dd/MM/yyyy",new Date(millisecond)).toString();
             holder.setTime(dateString);
         } catch (Exception e) {
-
             Toast.makeText(context, "Exception : " + e.getMessage(), Toast.LENGTH_SHORT).show();
-
         }
 
         //get like count
         firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").addSnapshotListener((Activity) context, new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                if(e==null)
-                {
-                    if (!documentSnapshots.isEmpty() ) {
+                if (e == null) {
+                    if (!documentSnapshots.isEmpty()) {
                         int count = documentSnapshots.size();
                         holder.updateLikeCount(count);
 
@@ -119,8 +114,7 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").document(currentUserId).addSnapshotListener((Activity) context, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
-                if(e==null)
-                {
+                if (e == null) {
                     if (documentSnapshot.exists()) {
                         holder.blogLikeButton.setImageDrawable(context.getDrawable(R.mipmap.like_button_accent));
                         //Log.e("MyTag", "Firebase exception", e);
@@ -162,6 +156,25 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
                 context.startActivity(commentIntent);
             }
         });
+
+        //comment_counter
+        firebaseFirestore.collection("Posts/" + blogPostId + "/Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                if(e==null)
+                {
+                    if(!documentSnapshots.isEmpty())
+                    {
+                        int comment_size = documentSnapshots.size();
+                        holder.updateCommentCount(comment_size);
+                    }else{
+                        holder.updateCommentCount(0);
+                    }
+                }
+            }
+        });
+
+
     }
 
     @Override
@@ -190,21 +203,27 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         private ImageView blogLikeButton;
         private TextView blogLikeCounter;
         private ImageView blogCommnetButton;
+        private TextView blogCommentCounter;
+        private TextView blogLocation;
 
-        public ViewHolder(View itemView) {
+
+        private ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
 
             blogLikeButton = mView.findViewById(R.id.blog_like_button);
             blogCommnetButton = mView.findViewById(R.id.comment_btn);
+
+
         }
 
-        public void setDescriptionText(String desc) {
+        private void setDescriptionText(String desc) {
             descriptionView = mView.findViewById(R.id.blog_desc);
             descriptionView.setText(desc);
         }
 
-        public void setBlogImage(String downloadUrl, String thumbUrl) {
+
+        private void setBlogImage(String downloadUrl, String thumbUrl) {
             blogImage = mView.findViewById(R.id.blog_image);
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.placeholder(R.drawable.image_placeholder);
@@ -213,7 +232,7 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
             ).into(blogImage);
         }
 
-        public void setTime(String date) {
+        private void setTime(String date) {
             blogDate = mView.findViewById(R.id.blog_date);
             blogDate.setText(date);
         }
@@ -227,11 +246,20 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
             Glide.with(context).applyDefaultRequestOptions(placeHolder).load(image).into(userImage);
         }
 
-        public void updateLikeCount(int count) {
+        private void updateLikeCount(int count) {
             blogLikeCounter = mView.findViewById(R.id.blog_like_count);
-            blogLikeCounter.setText(count + " Likes");
+            blogLikeCounter.setText(String.valueOf(count));
         }
 
+        private void updateCommentCount(int count)
+        {
+            blogCommentCounter = mView.findViewById(R.id.blog_comment_count);
+            blogCommentCounter.setText(String.valueOf(count));
+        }
 
+        private void setBlogLocation(String location){
+            blogLocation = mView.findViewById(R.id.blog_post_location_text);
+            blogLocation.setText(location);
+        }
     }
 }

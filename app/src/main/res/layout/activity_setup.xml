@@ -46,21 +46,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
+    <EditText
+        android:id="@+id/setupCountry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/edittext_border_blank"
+        android:ems="10"
+        android:hint="Enter Country"
+        android:inputType="textPersonName"
+        android:padding="15dp"
+        android:textColorHint="#CCCCCC"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setupName" />
+
     <Button
         android:id="@+id/setupButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/button_border"
         android:padding="20dp"
         android:text="@string/save_account_settings"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setupName" />
+        app:layout_constraintTop_toBottomOf="@+id/setupCountry" />
 
     <ProgressBar
         android:id="@+id/setup_progressbar"

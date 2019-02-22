@@ -46,6 +46,7 @@ public class SetupActivity extends AppCompatActivity {
     private CircleImageView mCircleImageView;
     private Uri mMainImageUri = null;
     private EditText mSetupName;
+    private EditText mSetupCountry;
     private Button mSetupButton;
     private StorageReference mStorageRef;
     private ProgressBar mSetupProgressBar;
@@ -63,6 +64,7 @@ public class SetupActivity extends AppCompatActivity {
         mCircleImageView = findViewById(R.id.profile_image);
         mAuth = FirebaseAuth.getInstance();
         mSetupName = findViewById(R.id.setupName);
+        mSetupCountry = findViewById(R.id.setupCountry);
         mSetupButton = findViewById(R.id.setupButton);
         mSetupProgressBar = findViewById(R.id.setup_progressbar);
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -86,12 +88,6 @@ public class SetupActivity extends AppCompatActivity {
                         mMainImageUri = Uri.parse(image);
 
                         mSetupName.setText(name);
-                        mSetupButton.setVisibility(View.GONE);
-                        mSetupName.setCursorVisible(false);
-                        mSetupName.setLongClickable(false);
-                        mSetupName.setClickable(false);
-                        mSetupName.setFocusable(false);
-                        mSetupName.setBackgroundResource(android.R.color.transparent);
                         RequestOptions placeHolderRequest = new RequestOptions();
                         placeHolderRequest.placeholder(R.drawable.profile_image);
                         Glide.with(SetupActivity.this).setDefaultRequestOptions(placeHolderRequest).load(image).into(mCircleImageView);
@@ -128,7 +124,8 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final String user_name = mSetupName.getText().toString();
-                if (!TextUtils.isEmpty(user_name) && mMainImageUri != null) {
+                final String user_country = mSetupCountry.getText().toString();
+                if (!TextUtils.isEmpty(user_name) && !TextUtils.isEmpty(user_country) && mMainImageUri != null) {
                     mSetupProgressBar.setVisibility(View.VISIBLE);
                     if (isChanged) {
                         user_id = mAuth.getCurrentUser().getUid();
@@ -137,7 +134,7 @@ public class SetupActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    uploadToFirestore(task, user_name);
+                                    uploadToFirestore(task, user_name,user_country);
                                 } else {
                                     String image_error = task.getException().toString();
                                     Toast.makeText(SetupActivity.this, "Error : " + image_error, Toast.LENGTH_SHORT).show();
@@ -147,7 +144,7 @@ public class SetupActivity extends AppCompatActivity {
                             }
                         });
                     } else {
-                        uploadToFirestore(null, user_name);
+                        uploadToFirestore(null, user_name,user_country);
                     }
                 }
             }
@@ -182,7 +179,7 @@ public class SetupActivity extends AppCompatActivity {
         finish();
     }
 
-    private void uploadToFirestore(@NonNull Task<UploadTask.TaskSnapshot> task, String user_name) {
+    private void uploadToFirestore(@NonNull Task<UploadTask.TaskSnapshot> task, String user_name,String user_country) {
         Uri download_uri;
         if (task != null) {
             download_uri = task.getResult().getDownloadUrl();
@@ -193,6 +190,7 @@ public class SetupActivity extends AppCompatActivity {
         Map<String, String> user = new HashMap<>();
         user.put("name", user_name);
         user.put("image", download_uri.toString());
+        user.put("country",user_country);
 
         mFirebaseFirestore.collection("Users").document(user_id).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

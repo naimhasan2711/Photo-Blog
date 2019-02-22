@@ -53,6 +53,8 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.1.1'
     //image compressor
     implementation 'id.zelory:compressor:2.1.0'
+    //time formatting
+    implementation 'com.github.marlonlom:timeago:4.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

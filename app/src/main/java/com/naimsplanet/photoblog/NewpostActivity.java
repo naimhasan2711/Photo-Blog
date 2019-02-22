@@ -43,6 +43,7 @@ public class NewpostActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private ImageView mBlogpostImage;
     private EditText mBlogPostDescription;
+    private EditText mBlogPostLocation;
     private Button mPostBlogButton;
     private Uri mPostUri = null;
     private ProgressBar mNewPostProgressBar;
@@ -64,6 +65,7 @@ public class NewpostActivity extends AppCompatActivity {
 
         mBlogpostImage = findViewById(R.id.blogPost_image);
         mBlogPostDescription = findViewById(R.id.blogPost_description);
+        mBlogPostLocation= findViewById(R.id.blogPost_location);
         mPostBlogButton = findViewById(R.id.post_blog_button);
         mNewPostProgressBar = findViewById(R.id.newPostProgressbar);
 
@@ -94,7 +96,6 @@ public class NewpostActivity extends AppCompatActivity {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setMinCropResultSize(512, 512)
-                .setAspectRatio(2, 1)
                 .start(NewpostActivity.this);
     }
 
@@ -115,52 +116,10 @@ public class NewpostActivity extends AppCompatActivity {
 
     private void postBlog() {
 
-        /*
-        final String postDescription = mBlogPostDescription.getText().toString();
-
-        if (!TextUtils.isEmpty(postDescription) && mPostUri != null) {
-            mNewPostProgressBar.setVisibility(View.VISIBLE);
-            String randomNumber = FieldValue.serverTimestamp().toString();
-            StorageReference file_path = mStorageReference.child("post_image").child(randomNumber + ".jpg");
-            file_path.putFile(mPostUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        String downloadUri = task.getResult().getDownloadUrl().toString();
-
-                        Map<String, Object> postMap = new HashMap<>();
-                        postMap.put("image_uri", downloadUri);
-                        postMap.put("post_description", postDescription);
-                        postMap.put("user_id", current_user_id);
-                        postMap.put("timeStamp", FieldValue.serverTimestamp());
-
-                        mFirebaseFirestore.collection("Posts").add(postMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentReference> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(NewpostActivity.this, "Post Added Successfully!", Toast.LENGTH_SHORT).show();
-                                    sentToMain();
-                                } else {
-                                    String error_message = task.getException().getMessage();
-                                    Toast.makeText(NewpostActivity.this, "Error " + error_message, Toast.LENGTH_SHORT).show();
-                                }
-                                mNewPostProgressBar.setVisibility(View.INVISIBLE);
-                            }
-                        });
-
-                    } else {
-                        mNewPostProgressBar.setVisibility(View.INVISIBLE);
-                    }
-                }
-            });
-
-        }
-
-        */
-
         final String desc = mBlogPostDescription.getText().toString();
+        final String location = mBlogPostLocation.getText().toString();
 
-        if (!TextUtils.isEmpty(desc) && mPostUri != null) {
+        if (!TextUtils.isEmpty(desc) && mPostUri != null && !TextUtils.isEmpty(location)) {
 
             mNewPostProgressBar.setVisibility(View.VISIBLE);
 
@@ -226,6 +185,7 @@ public class NewpostActivity extends AppCompatActivity {
                                 postMap.put("image_thumb", downloadthumbUri);
                                 postMap.put("desc", desc);
                                 postMap.put("user_id", current_user_id);
+                                postMap.put("location",location);
                                 //postMap.put("user_name",mAuth.getCurrentUser().getDisplayName());
                                 postMap.put("timestamp", FieldValue.serverTimestamp());
 

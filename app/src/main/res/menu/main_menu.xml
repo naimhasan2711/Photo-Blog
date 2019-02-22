@@ -7,11 +7,7 @@
         android:icon="@mipmap/action_search"
         android:title="@string/action_search"
         app:showAsAction="always" />
-    <item
-        android:icon="@mipmap/action_person_button"
-        android:id="@+id/toolbar_setting"
-        app:showAsAction="collapseActionView"
-        android:title="@string/account_setting" />
+
     <item
         android:icon="@mipmap/action_logout_button"
         android:id="@+id/toolbar_logout"
