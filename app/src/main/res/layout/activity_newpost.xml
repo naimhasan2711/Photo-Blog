@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/cardview_light_background"
     tools:context=".NewpostActivity">
 
     <android.support.v7.widget.Toolbar
@@ -22,6 +22,7 @@
         android:layout_height="220dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:background="@color/colorPrimary"
         android:contentDescription="@string/todo"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,11 +38,12 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:autofillHints=""
+        android:background="@drawable/edittext_border_blank"
         android:ems="10"
         android:hint="@string/add_description"
         android:inputType="textMultiLine"
         android:padding="15dp"
-        android:textColorHint="#80FFFFFF"
+        android:textColorHint="#cccccc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/blogPost_image" />
@@ -54,11 +56,12 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:autofillHints=""
+        android:background="@drawable/edittext_border_blank"
         android:ems="10"
         android:hint="Add Location..."
         android:inputType="textMultiLine"
         android:padding="15dp"
-        android:textColorHint="#80FFFFFF"
+        android:textColorHint="#cccccc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/blogPost_description" />

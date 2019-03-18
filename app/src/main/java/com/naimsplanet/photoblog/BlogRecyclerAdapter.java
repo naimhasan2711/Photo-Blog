@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
@@ -37,6 +39,7 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
     public Context context;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth mAuth;
+    private FirebaseFirestoreSettings settings;
 
     public BlogRecyclerAdapter(List<Blog> blog_list) {
         this.blog_list = blog_list;
@@ -87,7 +90,7 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         try {
             long millisecond = blog_list.get(position).getTimestamp().getTime();
             //String dateString = DateFormat.format("MM/dd/yyyy", new Date(millisecond)).toString();
-            String dateString = DateFormat.format("dd/MM/yyyy",new Date(millisecond)).toString();
+            String dateString = DateFormat.format("dd/MM/yyyy", new Date(millisecond)).toString();
             holder.setTime(dateString);
         } catch (Exception e) {
             Toast.makeText(context, "Exception : " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -161,13 +164,11 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         firebaseFirestore.collection("Posts/" + blogPostId + "/Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                if(e==null)
-                {
-                    if(!documentSnapshots.isEmpty())
-                    {
+                if (e == null) {
+                    if (!documentSnapshots.isEmpty()) {
                         int comment_size = documentSnapshots.size();
                         holder.updateCommentCount(comment_size);
-                    }else{
+                    } else {
                         holder.updateCommentCount(0);
                     }
                 }
@@ -251,13 +252,12 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
             blogLikeCounter.setText(String.valueOf(count));
         }
 
-        private void updateCommentCount(int count)
-        {
+        private void updateCommentCount(int count) {
             blogCommentCounter = mView.findViewById(R.id.blog_comment_count);
             blogCommentCounter.setText(String.valueOf(count));
         }
 
-        private void setBlogLocation(String location){
+        private void setBlogLocation(String location) {
             blogLocation = mView.findViewById(R.id.blog_post_location_text);
             blogLocation.setText(location);
         }

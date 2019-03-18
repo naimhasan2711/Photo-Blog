@@ -89,12 +89,26 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="000000" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                     </map>
                                   </option>
                                   <option name="values">
                                     <map>
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="backgroundColor" value="e1e1e1" />
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="outputName" value="action_location" />
+                                      <entry key="imageAsset" value="C:\Users\User\Downloads\photoblog_logo.png" />
+                                      <entry key="outputName" value="action_logo_test" />
                                     </map>
                                   </option>
                                 </PersistentState>

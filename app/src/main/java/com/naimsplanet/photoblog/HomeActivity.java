@@ -1,13 +1,18 @@
 package com.naimsplanet.photoblog;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.FractionRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,9 +28,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import static com.naimsplanet.photoblog.ConnectivityReceiver.IS_NETWORK_AVAILABLE;
 
-public class HomeActivity extends AppCompatActivity
-    {
+
+public class HomeActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private Toolbar main_toolbar;
@@ -36,11 +42,32 @@ public class HomeActivity extends AppCompatActivity
     private HomeFragment homeFragment;
     private AccountFragment accountFragment;
     private NotificationFragment notificationFragment;
+    IntentFilter intentFilter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        intentFilter = new IntentFilter(ConnectivityReceiver.NETWORK_AVAILABLE_ACTION);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                boolean isNetworkAvailable = intent.getBooleanExtra(IS_NETWORK_AVAILABLE, false);
+                String networkStatus = isNetworkAvailable ? "connected" : "disconnected";
+
+                if (networkStatus.equals("disconnected")) {
+                    //startActivity(new Intent(HomeActivity.this,NetworkActivity.class));
+                    Intent networkIntent = new Intent(HomeActivity.this, NetworkActivity.class);
+                    startActivity(networkIntent);
+                    finish();
+                } else {
+                    Snackbar.make(findViewById(R.id.activity_home), "Network Status: " + networkStatus, Snackbar.LENGTH_LONG).show();
+                }
+            }
+        }, intentFilter);
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseFirestore = FirebaseFirestore.getInstance();
@@ -85,6 +112,8 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
+
+
     private void addBlogPost() {
         mAddBlogpostButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +148,23 @@ public class HomeActivity extends AppCompatActivity
                 }
             });
         }
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                boolean isNetworkAvailable = intent.getBooleanExtra(IS_NETWORK_AVAILABLE, false);
+                String networkStatus = isNetworkAvailable ? "connected" : "disconnected";
+
+                if (networkStatus.equals("disconnected")) {
+                    //startActivity(new Intent(HomeActivity.this,NetworkActivity.class));
+                    Intent networkIntent = new Intent(HomeActivity.this, NetworkActivity.class);
+                    startActivity(networkIntent);
+                    finish();
+                } else {
+                    Snackbar.make(findViewById(R.id.activity_home), "Network Status: " + networkStatus, Snackbar.LENGTH_LONG).show();
+                }
+            }
+        }, intentFilter);
     }
 
     @Override
@@ -206,10 +252,10 @@ public class HomeActivity extends AppCompatActivity
         fragmentTransaction.commit();
 
     }
-    private void sentToCommnet()
-    {
-        startActivity(new Intent(HomeActivity.this,CommentActivity.class));
+
+    private void sentToCommnet() {
+        startActivity(new Intent(HomeActivity.this, CommentActivity.class));
     }
 
 
-    }
+}

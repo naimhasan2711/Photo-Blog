@@ -29,7 +29,7 @@ public class AccountFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
     private String user_id;
-    private Uri imgaeUri=null;
+    private Uri imgaeUri = null;
     private TextView account_display_name;
     private TextView account_country_name;
     private TextView account_display_name_2;
@@ -45,7 +45,7 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.fragment_account, container, false);
+        View view = inflater.inflate(R.layout.fragment_account, container, false);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -57,13 +57,18 @@ public class AccountFragment extends Fragment {
 
         user_id = mAuth.getCurrentUser().getUid();
 
+        retrieveAccountInformation();
+        // Inflate the layout for this fragment
+        return view;
+
+    }
+
+    private void retrieveAccountInformation() {
         firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful())
-                {
-                    if(task.getResult().exists())
-                    {
+                if (task.isSuccessful()) {
+                    if (task.getResult().exists()) {
                         String name = task.getResult().getString("name");
                         String image = task.getResult().getString("image");
                         String country = task.getResult().getString("country");
@@ -72,25 +77,21 @@ public class AccountFragment extends Fragment {
 
                         account_display_name.setText(name);
                         account_country_name.setText(country);
-                        //account_display_name_2.setText(name);
                         account_email.setText(mAuth.getCurrentUser().getEmail().toString());
 
 
                         RequestOptions placeHolderRequest = new RequestOptions();
                         placeHolderRequest.placeholder(R.drawable.image_placeholder);
                         Glide.with(getActivity()).setDefaultRequestOptions(placeHolderRequest).load(imgaeUri).into(account_profile_image);
-                    }else{
+                    } else {
                         Toast.makeText(getActivity(), "Data doesn't exists!!! ", Toast.LENGTH_SHORT).show();
                     }
-                }else{
+                } else {
                     String read_error = task.getException().toString();
                     Toast.makeText(getActivity(), "Firestore error " + read_error, Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        // Inflate the layout for this fragment
-        return view;
-
     }
 
 }

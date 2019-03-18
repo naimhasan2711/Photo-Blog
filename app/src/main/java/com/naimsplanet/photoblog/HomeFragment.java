@@ -17,6 +17,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -35,11 +36,11 @@ public class HomeFragment extends Fragment {
     private FirebaseAuth mAuth;
     private DocumentSnapshot lastVisible;
     private Boolean isFirtPageFirstLoad = true;
+    private FirebaseFirestoreSettings settings;
 
     public HomeFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -54,8 +55,7 @@ public class HomeFragment extends Fragment {
         mBlog_list_view.setHasFixedSize(true);
         mAuth = FirebaseAuth.getInstance();
 
-
-        if (mAuth.getCurrentUser() != null ) {
+        if (mAuth.getCurrentUser() != null) {
             firebaseFirestore = FirebaseFirestore.getInstance();
             mBlog_list_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment {
                     if (documentSnapshots != null) {
 
                         if (isFirtPageFirstLoad) {
-                            lastVisible = documentSnapshots.getDocuments().get(documentSnapshots.size()-1);
+                            lastVisible = documentSnapshots.getDocuments().get(documentSnapshots.size() - 1);
                             blog_list.clear();
                         }
 
@@ -117,8 +117,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
 
-                    if(e==null)
-                    {
+                    if (e == null) {
                         if (!documentSnapshots.isEmpty()) {
                             lastVisible = documentSnapshots.getDocuments().get(documentSnapshots.size() - 1);
                             for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {

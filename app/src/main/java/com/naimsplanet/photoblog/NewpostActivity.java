@@ -65,7 +65,7 @@ public class NewpostActivity extends AppCompatActivity {
 
         mBlogpostImage = findViewById(R.id.blogPost_image);
         mBlogPostDescription = findViewById(R.id.blogPost_description);
-        mBlogPostLocation= findViewById(R.id.blogPost_location);
+        mBlogPostLocation = findViewById(R.id.blogPost_location);
         mPostBlogButton = findViewById(R.id.post_blog_button);
         mNewPostProgressBar = findViewById(R.id.newPostProgressbar);
 
@@ -185,7 +185,7 @@ public class NewpostActivity extends AppCompatActivity {
                                 postMap.put("image_thumb", downloadthumbUri);
                                 postMap.put("desc", desc);
                                 postMap.put("user_id", current_user_id);
-                                postMap.put("location",location);
+                                postMap.put("location", location);
                                 //postMap.put("user_name",mAuth.getCurrentUser().getDisplayName());
                                 postMap.put("timestamp", FieldValue.serverTimestamp());
 

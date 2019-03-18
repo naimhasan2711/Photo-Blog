@@ -44,4 +44,5 @@
     <string name="dhaka_bangladesh">Dhaka,Bangladesh</string>
     <string name="example_gmail_com">example@gmail.com</string>
     <string name="_100">100</string>
+    <string name="network">You are not connected to the internet. Please turn on wifi or mobile data to continue on Photo Blog</string>
 </resources>

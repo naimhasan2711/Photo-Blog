@@ -40,7 +40,7 @@ public class CommentActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth mAuth;
     private String current_user_id;
-    private List<Comment>commentList;
+    private List<Comment> commentList;
     private CommentRecyclerAdapter commentRecyclerAdapter;
 
 
@@ -70,16 +70,13 @@ public class CommentActivity extends AppCompatActivity {
         comment_list.setAdapter(commentRecyclerAdapter);
 
 
-
         firebaseFirestore.collection("Posts/" + blog_post_id + "/Comments")
-                .addSnapshotListener(CommentActivity.this,new EventListener<QuerySnapshot>() {
+                .addSnapshotListener(CommentActivity.this, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                        if(!documentSnapshots.isEmpty()){
-                            for(DocumentChange doc:documentSnapshots.getDocumentChanges())
-                            {
-                                if(doc.getType() == DocumentChange.Type.ADDED)
-                                {
+                        if (!documentSnapshots.isEmpty()) {
+                            for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+                                if (doc.getType() == DocumentChange.Type.ADDED) {
                                     String commentId = doc.getDocument().getId();
                                     Comment comment = doc.getDocument().toObject(Comment.class);
                                     commentList.add(comment);
